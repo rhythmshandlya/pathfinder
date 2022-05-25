@@ -4,19 +4,20 @@ import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
 
 import './PathfindingVisualizer.css';
 
-//Green Node
-const START_NODE_ROW = 5;
-const START_NODE_COL = 5;
+//Green Node => (0,0)
+const START_NODE_ROW = 0;
+const START_NODE_COL = 0
 
-//Red Node
-const FINISH_NODE_ROW = 5;
-const FINISH_NODE_COL = 10;
+//Red Node => (n-1, n-1)
+const FINISH_NODE_ROW = 10;
+const FINISH_NODE_COL = 14;
 
 
 const PathFinder = () => {
+  //Maintain grid state
   const [grid, setGrid] = useState([]);
-  const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
+  //Setup initial state of the grid
   const getInitialGrid = () => {
     const grid = [];
     for (let row = 0; row < 11; row++) {
@@ -26,10 +27,10 @@ const PathFinder = () => {
       }
       grid.push(currentRow);
     }
-    console.log(grid);
     return grid;
   };
   
+  // Utility function for getInitialGrid, to initialize a single node
   const createNode = (col, row) => {
     return {
       col,
@@ -43,6 +44,7 @@ const PathFinder = () => {
     };
   };
   
+  //Toggle behavior of a node to act as a wall or not act as a wall 
   const getNewGridWithWallToggled = (grid, row, col) => {
     const newGrid = grid.slice();
     const node = newGrid[row][col];
@@ -54,18 +56,19 @@ const PathFinder = () => {
     return newGrid;
   };
   
-  
+  //Set grid when component mounts
   useEffect(() => {
     const grid = getInitialGrid();
     setGrid(grid);
   }, []);
 
-  
+  //Handle wall creation
   function handleClick(row,col){
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
   }
 
+  // First animation function
   function animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -82,6 +85,7 @@ const PathFinder = () => {
     }
   }
 
+  //Second animation function
   function animateShortestPath(nodesInShortestPathOrder) {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
@@ -92,6 +96,7 @@ const PathFinder = () => {
     }
   }
 
+  //Do this when the button visualize is clicked
   function visualizeDijkstra() {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -103,6 +108,7 @@ const PathFinder = () => {
     //Perform visual animation
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
+  //Grid component
     return (
         <>
           <br /> <br />
@@ -122,7 +128,6 @@ const PathFinder = () => {
                         isFinish={isFinish}
                         isStart={isStart}
                         isWall={isWall}
-                        mouseIsPressed={mouseIsPressed}
                         onMouseClick={()=>{handleClick(row,col)}}
                         row={row}>
                         </Node>
