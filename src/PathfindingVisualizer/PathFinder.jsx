@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import Node from './Node/Node';
 import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
@@ -17,7 +18,6 @@ const PathFinder = () => {
   const [grid, setGrid] = useState([]);
 
   //Setup initial state of the grid
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getInitialGrid = () => {
     const grid = [];
     for (let row = 0; row < 11; row++) {
@@ -56,11 +56,11 @@ const PathFinder = () => {
     return newGrid;
   };
 
-  //Set grid when component mounts
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const grid = getInitialGrid();
     setGrid(grid);
-  }, [getInitialGrid]);
+  }, []);
 
   //Handle wall creation
   function handleClick(row, col) {
